@@ -295,7 +295,7 @@ export default function App() {
   };
   const removeNotification = (id) => setNotifications(prev => prev.filter(n => n.id !== id));
 
-  /// Mengambil data dari server
+  // Mengambil data dari server
 useEffect(() => {
   const fetchData = async () => {
     try {
