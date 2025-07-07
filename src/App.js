@@ -295,25 +295,27 @@ export default function App() {
   };
   const removeNotification = (id) => setNotifications(prev => prev.filter(n => n.id !== id));
 
-  // Mengambil data dari server
+// Mengambil data dari server
 useEffect(() => {
   const fetchData = async () => {
     try {
       const response = await fetch(`${API_URL}/api/accounts`);
       const data = await response.json();
-      if (data) {
-          setAccounts(Object.values(data)); // Menggunakan data dari server
+      // Pastikan data adalah objek dan ubah menjadi array
+      if (data && typeof data === 'object') {
+          setAccounts(Object.values(data)); 
       }
     } catch (error) {
       console.error("Gagal mengambil data dari server:", error);
-      // Biarkan kosong, dasbor akan menunggu data asli
+      // Biarkan kosong, dasbor akan terus mencoba tanpa menampilkan data sampel.
     }
   };
 
   fetchData(); // Panggil sekali saat komponen dimuat
   const interval = setInterval(fetchData, 5000); // Ambil data setiap 5 detik
   return () => clearInterval(interval);
-}, []); // Dependency array kosong agar hanya berjalan sekali saat mount
+}, []); // Dependency array kosong agar hanya berjalan sekali
+
 
   const handleToggleRobot = async (accountId, newStatus) => {
     // Optimistic UI update
