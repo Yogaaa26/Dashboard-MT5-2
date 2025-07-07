@@ -295,38 +295,25 @@ export default function App() {
   };
   const removeNotification = (id) => setNotifications(prev => prev.filter(n => n.id !== id));
 
-  // Mengambil data dari server
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${API_URL}/api/accounts`);
-        const data = await response.json();
-        // Di sini kita akan menggabungkan data dari server dengan data lokal
-        // Untuk simulasi, kita masih gunakan data lokal
-        if (data && data.length > 0) {
-            setAccounts(data); // Gunakan data dari server jika ada
-        } else {
-            // Jika server tidak mengembalikan data, gunakan simulasi
-            if (accounts.length === 0) {
-                setAccounts(generateMockData(100));
-                setHistory(generateMockHistory());
-            }
-        }
-      } catch (error) {
-        console.error("Gagal mengambil data dari server:", error);
-        // Jika gagal, kita gunakan data simulasi
-        if (accounts.length === 0) {
-            setAccounts(generateMockData(100));
-            setHistory(generateMockHistory());
-        }
+  /// Mengambil data dari server
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/accounts`);
+      const data = await response.json();
+      if (data) {
+          setAccounts(Object.values(data)); // Menggunakan data dari server
       }
-    };
-    
-    fetchData(); // Panggil sekali saat komponen dimuat
+    } catch (error) {
+      console.error("Gagal mengambil data dari server:", error);
+      // Biarkan kosong, dasbor akan menunggu data asli
+    }
+  };
 
-    const interval = setInterval(fetchData, 5000); // Ambil data setiap 5 detik
-    return () => clearInterval(interval);
-  }, []); // Dependency array kosong agar hanya berjalan sekali saat mount
+  fetchData(); // Panggil sekali saat komponen dimuat
+  const interval = setInterval(fetchData, 5000); // Ambil data setiap 5 detik
+  return () => clearInterval(interval);
+}, []); // Dependency array kosong agar hanya berjalan sekali saat mount
 
   const handleToggleRobot = async (accountId, newStatus) => {
     // Optimistic UI update
