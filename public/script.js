@@ -1,4 +1,4 @@
-// public/script.js (versi revisi dengan perbaikan format angka)
+// public/script.js (versi revisi dengan format angka)
 
 // URL API relatif (karena server dan frontend sama)
 const API_URL = "https://pond-rounded-lute.glitch.me/api/accounts";
@@ -11,10 +11,23 @@ const searchBar = document.getElementById('search-bar');
 
 let allAccounts = [];
 
-// Fungsi format currency
+// Fungsi format currency (dengan ribuan separator)
 const formatCurrency = (value) => {
-    const sign = value < 0 ? '-' : '';
-    return `${sign}$${Math.abs(value).toFixed(2)}`;
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+    return formatter.format(value);
+};
+
+// Fungsi format angka biasa dengan ribuan separator
+const formatNumber = (value, decimals = 3) => {
+    return new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+    }).format(value);
 };
 
 // Fungsi render summary (atas)
@@ -45,7 +58,6 @@ const renderAccounts = (accounts) => {
     }
 
     accountsContainer.innerHTML = accounts.map(account => {
-        // Pastikan angka di-parse menjadi number
         const profitLoss = parseFloat(account.profit) || 0;
         const entryPrice = parseFloat(account.entryPrice);
         const currentPrice = parseFloat(account.currentPrice);
@@ -73,9 +85,9 @@ const renderAccounts = (accounts) => {
                     </div>
                     <div class="card-body">
                         <div class="info-item"><div class="label">Pair</div><div class="value">${account.pair || '-'}</div></div>
-                        <div class="info-item"><div class="label">Lot</div><div class="value">${!isNaN(lotSize) ? lotSize.toFixed(2) : '-'}</div></div>
-                        <div class="info-item"><div class="label">Harga Masuk</div><div class="value">${!isNaN(entryPrice) ? entryPrice.toFixed(3) : '-'}</div></div>
-                        <div class="info-item"><div class="label">Harga Sekarang</div><div class="value">${!isNaN(currentPrice) ? currentPrice.toFixed(3) : '-'}</div></div>
+                        <div class="info-item"><div class="label">Lot</div><div class="value">${!isNaN(lotSize) ? formatNumber(lotSize, 2) : '-'}</div></div>
+                        <div class="info-item"><div class="label">Harga Masuk</div><div class="value">${!isNaN(entryPrice) ? formatNumber(entryPrice, 3) : '-'}</div></div>
+                        <div class="info-item"><div class="label">Harga Sekarang</div><div class="value">${!isNaN(currentPrice) ? formatNumber(currentPrice, 3) : '-'}</div></div>
                         <div class="pl-display">
                             <div class="label">Profit/Loss</div>
                             <div class="value ${profitLoss >= 0 ? 'text-green' : 'text-red'}">${formatCurrency(profitLoss)}</div>
@@ -93,10 +105,9 @@ const fetchData = async () => {
         const response = await fetch(API_URL);
         const data = await response.json();
 
-        // Ubah jadi array dan sort by accountName
         allAccounts = Object.values(data).sort((a, b) => a.accountName.localeCompare(b.accountName));
 
-        console.log('Data diterima dari server:', allAccounts); // Debug
+        console.log('Data diterima dari server:', allAccounts);
         filterAndRender();
     } catch (error) {
         console.error("Gagal mengambil data:", error);
