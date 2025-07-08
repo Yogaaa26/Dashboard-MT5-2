@@ -42,8 +42,8 @@ const generateMockData = (count) => {
       pair: pairs[Math.floor(Math.random() * pairs.length)],
       lotSize: parseFloat((Math.random() * 1.5 + 0.01).toFixed(2)),
       executionType: isActive ? types[Math.floor(Math.random() * types.length)] : 'none',
-      entryPrice: isActive ? parseFloat(basePrice.toFixed(5)) : 0,
-      currentPrice: isActive ? parseFloat((basePrice + (Math.random() - 0.5) * 0.01).toFixed(5)) : 0,
+      entryPrice: isActive ? parseFloat(basePrice.toFixed(3)) : 0,
+      currentPrice: isActive ? parseFloat((basePrice + (Math.random() - 0.5) * 0.01).toFixed(3)) : 0,
       status: isActive ? 'active' : 'inactive',
       robotStatus: Math.random() > 0.5 ? 'on' : 'off',
     });
@@ -187,8 +187,8 @@ const AccountCard = ({ account, onToggleRobot, handleDragStart, handleDragEnter,
           )}
           {account.status === 'active' ? (
             <>
-              <div className="text-slate-300"><p className="text-slate-500 text-xs">{isPending ? 'Harga Akan Eksekusi' : 'Harga Eksekusi'}</p><p className="font-semibold">{account.entryPrice.toFixed(5)}</p></div>
-              <div className="text-slate-300"><p className="text-slate-500 text-xs">Harga Sekarang</p><p className="font-semibold">{account.currentPrice.toFixed(5)}</p></div>
+              <div className="text-slate-300"><p className="text-slate-500 text-xs">{isPending ? 'Harga Akan Eksekusi' : 'Harga Eksekusi'}</p><p className="font-semibold">{account.entryPrice.toFixed(3)}</p></div>
+              <div className="text-slate-300"><p className="text-slate-500 text-xs">Harga Sekarang</p><p className="font-semibold">{account.currentPrice.toFixed(3)}</p></div>
             </>
           ) : ( <div className="col-span-2 md:col-span-3 flex items-center justify-center h-full bg-slate-800/50 rounded-md p-4 my-2"><p className="text-slate-400 italic">Tidak ada order aktif</p></div> )}
         </div>
@@ -265,7 +265,7 @@ const HistoryPage = ({ accounts, history }) => {
                                 <td className="px-6 py-4 text-center">
                                     <span className={`inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full ${summary.status === 'Floating' ? 'bg-cyan-500/20 text-cyan-400' : 'bg-green-500/20 text-green-400'}`}>
                                         {summary.status === 'Floating' ? <Activity className="mr-2" size={14} /> : <Check className="mr-2" size={14} />}
-                                        {summary.status === 'Floating' ? `Floating @${summary.entryPrice.toFixed(4)}` : 'Clear'}
+                                        {summary.status === 'Floating' ? `Floating @${summary.entryPrice.toFixed(3)}` : 'Clear'}
                                     </span>
                                 </td>
                             </tr>
