@@ -312,34 +312,20 @@ useEffect(() => {
 
 
   const handleToggleRobot = async (accountId, newStatus) => {
-    // Optimistic UI update
-    setAccounts(prevAccounts => 
-      prevAccounts.map(account => 
-        account.id === accountId 
-          ? { ...account, robotStatus: newStatus }
-          : account
-      )
-    );
-    
-    try {
-        await fetch(`${API_URL}/api/robot-toggle`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ accountId: accountId, newStatus: newStatus })
-        });
-    } catch (error) {
-        console.error("Gagal mengirim perintah ke server:", error);
-        // Rollback UI jika gagal
-        setAccounts(prevAccounts => 
-          prevAccounts.map(account => 
-            account.id === accountId 
-              ? { ...account, robotStatus: newStatus === 'on' ? 'off' : 'on' }
-              : account
-          )
-        );
-        addNotification('Error', 'Gagal mengirim perintah ke server.', 'take_profit_loss');
-    }
-  };
+  console.log("Kirim toggle robot:", accountId, newStatus);
+  try {
+    await fetch(`${API_URL}/api/robot-toggle`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ accountId, newStatus })
+    });
+    console.log("Berhasil kirim toggle robot ke server!");
+  } catch (error) {
+    console.error("Gagal kirim toggle robot:", error);
+    addNotification('Error', 'Gagal mengirim perintah ke server.', 'take_profit_loss');
+  }
+};
+
 
   const handleDragStart = (e, pos) => { dragItem.current = pos; setDragging(true); };
   const handleDragEnter = (e, pos) => { dragOverItem.current = pos; };
