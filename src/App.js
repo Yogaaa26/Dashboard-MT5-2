@@ -14,19 +14,13 @@ const formatCurrency = (value, includeSign = true) => {
 
 // --- Shared Logic ---
 const calculatePL = (account) => {
-    const isPending = account.executionType.includes('limit') || account.executionType.includes('stop');
-    if (account.status !== 'active' || isPending) {
-        return 0;
-    }
-    const priceDiff = account.currentPrice - account.entryPrice;
-    const multiplier = account.pair.includes('JPY') ? 100 : 100000;
-    if (account.executionType === 'buy') {
-        return priceDiff * account.lotSize * multiplier;
-    } else if (account.executionType === 'sell') {
-        return -priceDiff * account.lotSize * multiplier;
-    }
+  const isPending = account.executionType.includes('limit') || account.executionType.includes('stop');
+  if (account.status !== 'active' || isPending) {
     return 0;
+  }
+  return parseFloat(account.profit) || 0;
 };
+
 
 // Helper function to generate random mock data for accounts
 const generateMockData = (count) => {
