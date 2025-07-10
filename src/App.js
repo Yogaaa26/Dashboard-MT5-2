@@ -121,7 +121,7 @@ const AccountCard = ({ account, onToggleRobot, handleDragStart, handleDragEnter,
                 e.stopPropagation(); // Prevent drag from starting when clicking the button
                 onToggleRobot(account.id, account.robotStatus === 'on' ? 'off' : 'on');
               }}
-              title={`Robot ${account.robotStatus === 'on' ? 'ON' : 'OFF'}`
+              title={`Robot ${account.robotStatus === 'on' ? 'ON' : 'OFF'}`}
               className="p-1 rounded-full hover:bg-slate-700 transition-colors"
             >
               <Power 
@@ -316,7 +316,6 @@ export default function App() {
     );
     
     try {
-        await fetch(${API_URL}/api/robot-toggle, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ accountId: accountId, newStatus: newStatus })
