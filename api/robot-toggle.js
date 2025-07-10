@@ -1,6 +1,4 @@
-// api/robot-toggle.js
 import { commandQueue } from '../shared/state.js';
-
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     const { accountId, newStatus } = req.body;
