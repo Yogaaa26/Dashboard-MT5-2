@@ -1,5 +1,4 @@
-// /api/update.js
-
+// pages/api/update.js
 import { db } from "./firebase";
 
 export default async function handler(req, res) {
@@ -8,7 +7,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Baca data dari request
     let rawBody = '';
     req.on('data', chunk => { rawBody += chunk });
     req.on('end', async () => {
@@ -20,7 +18,6 @@ export default async function handler(req, res) {
           return res.status(400).json({ message: "Missing accountId in request body" });
         }
 
-        // Simpan ke Realtime Database
         await db.ref(`accounts/${data.accountId}`).set(data);
         console.log(`✅ Data akun ${data.accountId} berhasil disimpan ke Firebase`);
 

@@ -1,14 +1,21 @@
-import { commandQueue } from '../shared/state.js';
+// pages/api/robot-toggle.js
+import { db } from "./firebase";
+
 export default async function handler(req, res) {
-  if (req.method === 'POST') {
-    const { accountId, newStatus } = req.body;
-    if (!accountId || !newStatus) {
-      return res.status(400).json({ error: 'accountId dan newStatus dibutuhkan' });
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Method Not Allowed" });
+  }
+
+  try {
+    const { accountId, active } = req.body;
+    if (!accountId) {
+      return res.status(400).json({ message: "Missing accountId" });
     }
-    commandQueue[accountId] = { command: 'toggle_robot', status: newStatus };
-    console.log(`⚙️ Perintah untuk Akun ${accountId}: Robot ${newStatus}`);
-    res.status(200).json({ message: `Perintah untuk Akun ${accountId} dicatat.` });
-  } else {
-    res.status(405).json({ error: 'Method Not Allowed' });
+
+    await db.ref(`accounts/${accountId}/robotActive`).set(active);
+    res.status(200).json({ message: "Robot status updated" });
+  } catch (error) {
+    console.error("Error updating robot status:", error);
+    res.status(500).json({ message: "Internal server error", error: error.message });
   }
 }
