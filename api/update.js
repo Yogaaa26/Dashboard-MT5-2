@@ -1,8 +1,8 @@
+// api/update.js
+import { accountsData, commandQueue } from '../shared/state.js';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, setDoc, doc } from 'firebase/firestore';
-import { accountsData, commandQueue } from '../shared/state.js';
 
-// Inisialisasi Firebase satu kali
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
@@ -18,37 +18,43 @@ const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  try {
+  if (req.method === 'POST') {
     let rawBody = '';
-    req.on('data', chunk => { rawBody += chunk; });
+    req.on('data', chunk => rawBody += chunk);
     req.on('end', async () => {
-      rawBody = rawBody.toString('utf-8').replace(/\0/g, '').trim();
       try {
+        rawBody = rawBody.toString('utf-8').replace(/\0/g, '').trim();
         const data = JSON.parse(rawBody);
         const accountId = data.accountId;
-        if (!accountId) return res.status(400).json({ error: 'accountId dibutuhkan' });
+
+        if (!accountId) {
+          return res.status(400).json({ error: 'accountId dibutuhkan' });
+        }
 
         accountsData[accountId] = { ...accountsData[accountId], ...data };
-        await setDoc(doc(db, 'accounts', accountId), accountsData[accountId], { merge: true });
+        console.log(`✅ Update BERHASIL dari Akun: ${accountId}`);
+
+        try {
+          await setDoc(doc(db, 'accounts', accountId), accountsData[accountId], { merge: true });
+          console.log(`📦 Data akun ${accountId} berhasil disimpan ke Firestore`);
+        } catch (error) {
+          console.error('❌ Gagal simpan ke Firestore:', error);
+        }
 
         const command = commandQueue[accountId];
         if (command) {
           delete commandQueue[accountId];
-          return res.status(200).json(command);
+          res.status(200).json(command);
         } else {
-          return res.status(200).json({ status: 'ok', command: 'none' });
+          res.status(200).json({ status: 'ok', command: 'none' });
         }
-      } catch (e) {
-        console.error(e);
-        return res.status(400).json({ error: 'Format JSON tidak valid' });
+
+      } catch (error) {
+        console.error('❌ Gagal parsing JSON:', error);
+        res.status(400).json({ error: 'Format JSON tidak valid' });
       }
     });
-  } catch (e) {
-    console.error(e);
-    return res.status(500).json({ error: 'Internal server error' });
+  } else {
+    res.status(405).json({ error: 'Method Not Allowed' });
   }
 }
