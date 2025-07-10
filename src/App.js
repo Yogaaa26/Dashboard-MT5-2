@@ -37,7 +37,7 @@ const Notification = ({ notification, onClose }) => {
 
   return (
     <div className="bg-slate-800 border border-slate-700 rounded-lg shadow-2xl p-4 flex items-start space-x-3 animate-fade-in-up">
-      <Icon className={${iconColor} mt-1 flex-shrink-0} size={20} />
+      <Icon className={`${iconColor} mt-1 flex-shrink-0`} size={20} />
       <div className="flex-1">
         <p className="text-sm text-white font-semibold">{notification.title}</p>
         <p className="text-xs text-slate-300">{notification.message}</p>
@@ -121,7 +121,7 @@ const AccountCard = ({ account, onToggleRobot, handleDragStart, handleDragEnter,
                 e.stopPropagation(); // Prevent drag from starting when clicking the button
                 onToggleRobot(account.id, account.robotStatus === 'on' ? 'off' : 'on');
               }}
-              title={Robot ${account.robotStatus === 'on' ? 'ON' : 'OFF'}}
+              title={`Robot ${account.robotStatus === 'on' ? 'ON' : 'OFF'}`
               className="p-1 rounded-full hover:bg-slate-700 transition-colors"
             >
               <Power 
@@ -269,8 +269,8 @@ export default function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(${API_URL}/api/accounts);
-        const data = await response.json();
+        const response = await fetch(`${API_URL}/api/accounts`);
+        await fetch(`${API_URL}/api/robot-toggle`, {
         
         if (data && typeof data === 'object') {
             let serverAccounts = Object.values(data);
