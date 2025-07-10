@@ -251,7 +251,7 @@ export default function App() {
   const [accounts, setAccounts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [notifications, setNotifications] = useState([]);
-  const [history, setHistory] = useState([]); // Note: History data is not fetched in this example
+  const [history] = useState([]); // Note: History data is not fetched in this example
   const [page, setPage] = useState('dashboard');
 
   const dragItem = useRef(null);
