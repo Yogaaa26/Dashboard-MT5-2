@@ -116,13 +116,16 @@ const AccountCard = ({ account, onToggleRobot, handleDragStart, handleDragEnter,
   };
  
   return (
+  <div
     className={`bg-slate-800 rounded-lg shadow-xl border border-slate-700 overflow-hidden flex flex-col transition-all duration-300 cursor-grab ${isDragging ? 'opacity-50 scale-105' : 'opacity-100'}`}
-  draggable="true"
-  onDragStart={(e) => handleDragStart(e, index)}
-  onDragEnter={(e) => handleDragEnter(e, index)}
-  onDragEnd={handleDragEnd}
-  onDragOver={(e) => e.preventDefault()}
->
+    draggable="true"
+    onDragStart={(e) => handleDragStart(e, index)}
+    onDragEnter={(e) => handleDragEnter(e, index)}
+    onDragEnd={handleDragEnd}
+  >
+    {/* isi kartu / konten di sini */}
+  </div>
+);
       <div className={`p-4 border-l-4 ${getBorderColor()} flex-grow`}>
         <div className="flex justify-between items-start mb-3">
           <div className="flex items-center space-x-2">
