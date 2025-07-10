@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Briefcase, TrendingUp, TrendingDown, DollarSign, List, Clock, Search, X, CheckCircle, Bell, ArrowLeft, History, Activity, Check, Power } from 'lucide-react';
+import AccountList from './components/AccountList'; 
 
 // --- KONFIGURASI PENTING ---
 // Ganti alamat URL ini dengan alamat server backend Anda dari Glitch nanti
@@ -389,27 +390,36 @@ export default function App() {
         </header>
 
         <main>
-          {page === 'dashboard' ? (
-            <>
-              <div className="mb-6 relative">
-                <input type="text" placeholder="Cari nama akun..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full bg-slate-800 border border-slate-700 rounded-lg py-3 pl-10 pr-4 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-              </div>
-              <DashboardView 
-                accounts={accounts} 
-                searchTerm={searchTerm} 
-                onToggleRobot={handleToggleRobot} 
-                handleDragStart={handleDragStart} 
-                handleDragEnter={handleDragEnter} 
-                handleDragEnd={handleDragEnd} 
-                dragging={dragging} 
-                dragItem={dragItem} 
-              />
-            </>
-          ) : (
-            <HistoryPage accounts={accounts} history={history} />
-          )}
-        </main>
+  {page === 'dashboard' ? (
+    <>
+      <div className="mb-6 relative">
+        <input 
+          type="text" 
+          placeholder="Cari nama akun..." 
+          value={searchTerm} 
+          onChange={(e) => setSearchTerm(e.target.value)} 
+          className="w-full bg-slate-800 border border-slate-700 rounded-lg py-3 pl-10 pr-4 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+        />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+      </div>
+
+      <DashboardView 
+        accounts={accounts} 
+        searchTerm={searchTerm} 
+        onToggleRobot={handleToggleRobot} 
+        handleDragStart={handleDragStart} 
+        handleDragEnter={handleDragEnter} 
+        handleDragEnd={handleDragEnd} 
+        dragging={dragging} 
+        dragItem={dragItem} 
+      />
+
+      <AccountList />  {/* 👈 Tambahkan ini */}
+    </>
+  ) : (
+    <HistoryPage accounts={accounts} history={history} />
+  )}
+</main>
       </div>
       <NotificationContainer notifications={notifications} removeNotification={removeNotification} />
     </div>
