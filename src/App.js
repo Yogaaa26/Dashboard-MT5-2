@@ -4,7 +4,7 @@ import { Briefcase, TrendingUp, TrendingDown, DollarSign, List, Clock, Search, X
 
 // --- KONFIGURASI PENTING ---
 // Ganti alamat URL ini dengan alamat server backend Anda dari Glitch nanti
-const API_URL = "https://nama-proyek-anda.glitch.me"; 
+const API_URL = "https://dashboard-mt-5.vercel.app"; 
 
 // Helper function to format currency
 =======
