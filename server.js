@@ -1,4 +1,4 @@
-// server.js (Final, clean, pakai dotenv & env variables)
+// server.js (Final untuk Vercel)
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -12,7 +12,6 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, setDoc, doc } from "firebase/firestore";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 // Konversi __dirname (karena pakai ES Module)
 const __filename = fileURLToPath(import.meta.url);
@@ -99,7 +98,5 @@ app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server berjalan di port ${PORT}`);
-});
+// ✅ Di Vercel, export app sebagai default
+export default app;
