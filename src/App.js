@@ -270,7 +270,7 @@ export default function App() {
     const fetchData = async () => {
       try {
         const response = await fetch(`${API_URL}/api/accounts`);
-        await fetch(`${API_URL}/api/robot-toggle`, {
+        const data = await response.json();
         
         if (data && typeof data === 'object') {
             let serverAccounts = Object.values(data);
