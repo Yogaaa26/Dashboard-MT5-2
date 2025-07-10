@@ -61,7 +61,7 @@ const SummaryStat = ({ icon, title, value, colorClass = 'text-white' }) => (
     <div className="bg-slate-900 p-3 rounded-full">{icon}</div>
     <div>
       <p className="text-sm text-slate-400">{title}</p>
-      <p className={text-lg font-bold ${colorClass}}>{value}</p>
+      <p className={`text-lg font-bold ${colorClass}`}>{value}</p>
     </div>
   </div>
 );
