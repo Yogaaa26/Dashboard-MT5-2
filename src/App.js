@@ -101,8 +101,10 @@ const AccountCard = ({ account, onToggleRobot, handleDragStart, handleDragEnter,
     else if (type === 'sell_stop' || type === 'sell_limit') { bgColor = 'bg-yellow-600'; } 
     else if (type === 'buy') { bgColor = 'bg-blue-600'; } 
     else if (type === 'sell') { bgColor = 'bg-red-600'; }
-    return <span className={px-3 py-1 text-xs font-semibold rounded-full ${bgColor} ${textColor}}>{type.replace('_', ' ').toUpperCase()}</span>;
-  };
+    return <span className={`px-3 py-1 text-xs font-semibold rounded-full ${bgColor} ${textColor}`}>
+    {type.replace('_', ' ').toUpperCase()}
+  </span>
+);
 
   const getBorderColor = () => {
     if (account.status !== 'active') return 'border-slate-600';
@@ -111,9 +113,14 @@ const AccountCard = ({ account, onToggleRobot, handleDragStart, handleDragEnter,
   };
  
   return (
-    <div className={bg-slate-800 rounded-lg shadow-xl border border-slate-700 overflow-hidden flex flex-col transition-all duration-300 cursor-grab ${isDragging ? 'opacity-50 scale-105' : 'opacity-100'}}
-      draggable="true" onDragStart={(e) => handleDragStart(e, index)} onDragEnter={(e) => handleDragEnter(e, index)} onDragEnd={handleDragEnd} onDragOver={(e) => e.preventDefault()}>
-      <div className={p-4 border-l-4 ${getBorderColor()} flex-grow}>
+    className={`bg-slate-800 rounded-lg shadow-xl border border-slate-700 overflow-hidden flex flex-col transition-all duration-300 cursor-grab ${isDragging ? 'opacity-50 scale-105' : 'opacity-100'}`}
+  draggable="true"
+  onDragStart={(e) => handleDragStart(e, index)}
+  onDragEnter={(e) => handleDragEnter(e, index)}
+  onDragEnd={handleDragEnd}
+  onDragOver={(e) => e.preventDefault()}
+>
+      <div className={`p-4 border-l-4 ${getBorderColor()} flex-grow`}>
         <div className="flex justify-between items-start mb-3">
           <div className="flex items-center space-x-2">
             <h3 className="text-lg font-bold text-white">{account.accountName}</h3>
@@ -122,7 +129,7 @@ const AccountCard = ({ account, onToggleRobot, handleDragStart, handleDragEnter,
                 e.stopPropagation(); // Prevent drag from starting when clicking the button
                 onToggleRobot(account.id, account.robotStatus === 'on' ? 'off' : 'on');
               }}
-              title={Robot ${account.robotStatus === 'on' ? 'ON' : 'OFF'}}
+              title={`Robot ${account.robotStatus === 'on' ? 'ON' : 'OFF'}`}
               className="p-1 rounded-full hover:bg-slate-700 transition-colors"
             >
               <Power 
@@ -143,7 +150,9 @@ const AccountCard = ({ account, onToggleRobot, handleDragStart, handleDragEnter,
               {isPending ? (
                 <><p className="text-slate-500 text-xs">Status</p><p className="text-xl font-bold text-yellow-500 flex items-center justify-end"><Clock size={18} className="mr-2"/> Pending</p></>
               ) : (
-                <><p className="text-slate-500 text-xs">Profit/Loss</p><p className={text-xl font-bold ${isProfitable ? 'text-green-500' : 'text-red-500'}}>{formatCurrency(profitLoss)}</p></>
+                <><p className="text-slate-500 text-xs">Profit/Loss</p><p className={`text-xl font-bold ${isProfitable ? 'text-green-500' : 'text-red-500'}`}>
+  {formatCurrency(profitLoss)}
+</p></>
               )}
             </div>
           )}
@@ -230,14 +239,14 @@ const HistoryPage = ({ accounts, history }) => {
                             <tr key={summary.id} className="border-b border-slate-700 hover:bg-slate-700/50">
                                 <td className="px-6 py-4 font-medium text-white">{summary.name}</td>
                                 <td className="px-6 py-4 text-center">{summary.totalOrders}</td>
-                                <td className={px-6 py-4 font-semibold text-right ${summary.totalPL > 0 ? 'text-green-500' : summary.totalPL < 0 ? 'text-red-500' : 'text-slate-300'}}>
-                                    {formatCurrency(summary.totalPL)}
-                                </td>
+                                <td className={`px-6 py-4 font-semibold text-right ${summary.totalPL > 0 ? 'text-green-500' : summary.totalPL < 0 ? 'text-red-500' : 'text-slate-300'}`}>
+  {formatCurrency(summary.totalPL)}
+</td>
                                 <td className="px-6 py-4 text-center">
-                                    <span className={inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full ${summary.status === 'Floating' ? 'bg-cyan-500/20 text-cyan-400' : 'bg-green-500/20 text-green-400'}}>
-                                        {summary.status === 'Floating' ? <Activity className="mr-2" size={14} /> : <Check className="mr-2" size={14} />}
-                                        {summary.status === 'Floating' ? Floating @${summary.entryPrice.toFixed(3)} : 'Clear'}
-                                    </span>
+                                    <span className={`inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full ${summary.status === 'Floating' ? 'bg-cyan-500/20 text-cyan-400' : 'bg-green-500/20 text-green-400'}`}>
+  {summary.status === 'Floating' ? <Activity className="mr-2" size={14} /> : <Check className="mr-2" size={14} />}
+  {summary.status === 'Floating' ? `Floating @${summary.entryPrice.toFixed(3)}` : 'Clear'}
+</span>
                                 </td>
                             </tr>
                         ))}
@@ -270,7 +279,7 @@ export default function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(${API_URL}/api/accounts);
+        const response = await fetch(`${API_URL}/api/accounts`);
         const data = await response.json();
         
         if (data && typeof data === 'object') {
@@ -317,7 +326,7 @@ export default function App() {
     );
     
     try {
-        await fetch(${API_URL}/api/robot-toggle, {
+        await fetch(`${API_URL}/api/robot-toggle`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ accountId: accountId, newStatus: newStatus })
