@@ -1,26 +1,18 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Briefcase, TrendingUp, TrendingDown, DollarSign, List, Clock, Search, X, CheckCircle, Bell, ArrowLeft, History, Activity, Check, Power } from 'lucide-react';
-<<<<<<< HEAD
 
-// --- KONFIGURASI PENTING ---
-// Ganti alamat URL ini dengan alamat server backend Anda dari Glitch nanti
+// URL backend (Vercel)
 const API_URL = "https://dashboard-mt-5.vercel.app"; 
 
-// Helper function to format currency
-=======
-import AccountList from './components/AccountList'; 
-
-const API_URL = "https://pond-rounded-lute.glitch.me"; 
 const LOCAL_STORAGE_KEY = 'accountOrder';
 
->>>>>>> da77c97b00ec707b7c10ecd17fc5dc3f03eb5ec7
 const formatCurrency = (value, includeSign = true) => {
   const absValue = Math.abs(value);
   const sign = value < 0 ? '-' : (includeSign ? '+' : '');
   return `${sign}$${absValue.toFixed(2)}`;
 };
 
-<<<<<<< HEAD
+
 // --- Shared Logic ---
 const calculatePL = (account) => {
     const isPending = account.executionType.includes('limit') || account.executionType.includes('stop');
@@ -72,14 +64,12 @@ const generateMockHistory = () => {
 
 // --- React Components ---
 
-=======
 const calculatePL = (account) => {
   const isPending = account.executionType.includes('limit') || account.executionType.includes('stop');
   if (account.status !== 'active' || isPending) return 0;
   return parseFloat(account.profit) || 0;
 };
 
->>>>>>> da77c97b00ec707b7c10ecd17fc5dc3f03eb5ec7
 const Notification = ({ notification, onClose }) => {
   useEffect(() => {
     const timer = setTimeout(() => onClose(notification.id), 5000);
@@ -116,11 +106,8 @@ const SummaryStat = ({ icon, title, value, colorClass = 'text-white' }) => (
     <div className="bg-slate-900 p-3 rounded-full">{icon}</div>
     <div>
       <p className="text-sm text-slate-400">{title}</p>
-<<<<<<< HEAD
       <p className={`text-2xl font-bold ${colorClass}`}>{value}</p>
-=======
       <p className={`text-lg font-bold ${colorClass}`}>{value}</p>
->>>>>>> da77c97b00ec707b7c10ecd17fc5dc3f03eb5ec7
     </div>
   </div>
 );
@@ -143,11 +130,8 @@ const SummaryDashboard = ({ accounts }) => {
       <SummaryStat icon={<TrendingUp size={24} className="text-green-400" />} title="Floating Profit" value={summary.profitableAccounts} colorClass="text-green-500" />
       <SummaryStat icon={<TrendingDown size={24} className="text-red-400" />} title="Floating Minus" value={summary.losingAccounts} colorClass="text-red-500" />
       <SummaryStat icon={<Clock size={24} className="text-yellow-400" />} title="Order Pending" value={summary.pendingOrdersCount} colorClass="text-yellow-500" />
-<<<<<<< HEAD
       <SummaryStat icon={<DollarSign size={24} className={summary.totalPL >= 0 ? 'text-green-400' : 'text-red-400'} />} title="Total Profit/Loss" value={formatCurrency(summary.totalPL, false)} colorClass={summary.totalPL >= 0 ? 'text-green-500' : 'text-red-500'} />
-=======
       <SummaryStat icon={<DollarSign size={24} className={summary.totalPL >= 0 ? 'text-green-400' : 'text-red-400'} />} title="Total P/L" value={formatCurrency(summary.totalPL, false)} colorClass={summary.totalPL >= 0 ? 'text-green-500' : 'text-red-500'} />
->>>>>>> da77c97b00ec707b7c10ecd17fc5dc3f03eb5ec7
     </div>
   );
 };
@@ -164,16 +148,13 @@ const AccountCard = ({ account, onToggleRobot, handleDragStart, handleDragEnter,
     else if (type === 'sell_stop' || type === 'sell_limit') { bgColor = 'bg-yellow-600'; } 
     else if (type === 'buy') { bgColor = 'bg-blue-600'; } 
     else if (type === 'sell') { bgColor = 'bg-red-600'; }
-<<<<<<< HEAD
     return <span className={`px-3 py-1 text-xs font-semibold rounded-full ${bgColor} ${textColor}`}>{type.replace('_', ' ').toUpperCase()}</span>;
-=======
 
     return (
       <span className={`px-3 py-1 text-xs font-semibold rounded-full ${bgColor} ${textColor}`}>
         {type.replace('_', ' ').toUpperCase()}
       </span>
     );
->>>>>>> da77c97b00ec707b7c10ecd17fc5dc3f03eb5ec7
   };
 
   const getBorderColor = () => {
@@ -181,7 +162,6 @@ const AccountCard = ({ account, onToggleRobot, handleDragStart, handleDragEnter,
     if (isPending) return 'border-yellow-500';
     return isProfitable ? 'border-green-500' : 'border-red-500';
   };
-<<<<<<< HEAD
   
   return (
     <div className={`bg-slate-800 rounded-lg shadow-xl border border-slate-700 overflow-hidden flex flex-col transition-all duration-300 cursor-grab ${isDragging ? 'opacity-50' : 'opacity-100'}`}
@@ -227,7 +207,6 @@ const AccountCard = ({ account, onToggleRobot, handleDragStart, handleDragEnter,
             </>
           ) : ( <div className="col-span-2 md:col-span-3 flex items-center justify-center h-full bg-slate-800/50 rounded-md p-4 my-2"><p className="text-slate-400 italic">Tidak ada order aktif</p></div> )}
         </div>
-=======
 
   return (
     <div
@@ -240,14 +219,12 @@ const AccountCard = ({ account, onToggleRobot, handleDragStart, handleDragEnter,
       <div className="p-4 flex-grow">
         {/* konten kartu yang sudah ada tetap, termasuk tombol toggle robot dan harga */}
         {/* copy paste konten asli kamu di sini */}
->>>>>>> da77c97b00ec707b7c10ecd17fc5dc3f03eb5ec7
       </div>
     </div>
   );
 };
 
 const DashboardView = ({ accounts, searchTerm, onToggleRobot, handleDragStart, handleDragEnter, handleDragEnd, dragging, dragItem }) => {
-<<<<<<< HEAD
     const filteredAccounts = useMemo(() => {
         if (!searchTerm) return accounts;
         return accounts.filter(account => account.accountName.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -329,7 +306,6 @@ const HistoryPage = ({ accounts, history }) => {
 
 
 // Main App Component
-=======
   const filteredAccounts = useMemo(() => {
     if (!searchTerm) return accounts;
     return accounts.filter(account => account.accountName.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -417,20 +393,16 @@ const HistoryPage = ({ accounts, history }) => {
   );
 };
 
->>>>>>> da77c97b00ec707b7c10ecd17fc5dc3f03eb5ec7
 export default function App() {
   const [accounts, setAccounts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [notifications, setNotifications] = useState([]);
-<<<<<<< HEAD
   const [history, setHistory] = useState([]);
   const [page, setPage] = useState('dashboard');
   
-=======
   const [history, setHistory] = useState([]); 
   const [page, setPage] = useState('dashboard');
 
->>>>>>> da77c97b00ec707b7c10ecd17fc5dc3f03eb5ec7
   const dragItem = useRef(null);
   const dragOverItem = useRef(null);
   const [dragging, setDragging] = useState(false);
@@ -440,7 +412,6 @@ export default function App() {
   };
   const removeNotification = (id) => setNotifications(prev => prev.filter(n => n.id !== id));
 
-<<<<<<< HEAD
   // Mengambil data dari server
 useEffect(() => {
   const fetchData = async () => {
@@ -488,35 +459,27 @@ useEffect(() => {
           )
         );
         addNotification('Error', 'Gagal mengirim perintah ke server.', 'take_profit_loss');
-=======
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${API_URL}/api/accounts`);
-        const data = await response.json();
-
-        if (data && typeof data === 'object') {
-          let serverAccounts = Object.values(data);
-          const savedOrderJSON = localStorage.getItem(LOCAL_STORAGE_KEY);
-          if (savedOrderJSON) {
-            const savedOrder = JSON.parse(savedOrderJSON);
-            const accountMap = new Map(serverAccounts.map(acc => [acc.id, acc]));
-            const sortedAccounts = savedOrder.map(id => accountMap.get(id)).filter(Boolean);
-            const newAccounts = serverAccounts.filter(acc => !savedOrder.includes(acc.id));
-            setAccounts([...sortedAccounts, ...newAccounts]);
-          } else {
-            setAccounts(serverAccounts);
-          }
-        }
-      } catch (error) {
-        console.error("Gagal mengambil data dari server:", error);
-        addNotification('Error', 'Gagal mengambil data dari server.', 'take_profit_loss');
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/accounts`);
+      const data = await response.json();
+      if (data && typeof data === 'object') {
+        const serverAccounts = Object.values(data);
+        const savedOrder = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
+        const map = new Map(serverAccounts.map(acc => [acc.id, acc]));
+        const ordered = savedOrder.map(id => map.get(id)).filter(Boolean);
+        const rest = serverAccounts.filter(acc => !savedOrder.includes(acc.id));
+        setAccounts([...ordered, ...rest]);
       }
-    };
-    fetchData();
-    const interval = setInterval(fetchData, 5000);
-    return () => clearInterval(interval);
-  }, []);
+    } catch (error) {
+      console.error("Gagal mengambil data:", error);
+    }
+  };
+  fetchData();
+  const interval = setInterval(fetchData, 5000);
+  return () => clearInterval(interval);
+}, []);
 
   const handleToggleRobot = async (accountId, newStatus) => {
     setAccounts(prev => prev.map(acc => acc.id === accountId ? { ...acc, robotStatus: newStatus } : acc));
@@ -530,25 +493,24 @@ useEffect(() => {
       console.error("Gagal mengirim perintah ke server:", error);
       setAccounts(prev => prev.map(acc => acc.id === accountId ? { ...acc, robotStatus: newStatus === 'on' ? 'off' : 'on' } : acc));
       addNotification('Error', 'Gagal mengirim perintah ke server.', 'take_profit_loss');
->>>>>>> da77c97b00ec707b7c10ecd17fc5dc3f03eb5ec7
     }
   };
 
   const handleDragStart = (e, pos) => { dragItem.current = pos; setDragging(true); };
   const handleDragEnter = (e, pos) => { dragOverItem.current = pos; };
   const handleDragEnd = () => {
-<<<<<<< HEAD
-    if (dragOverItem.current === null) { setDragging(false); return; }
-    const accountsCopy = [...accounts];
-    const dragItemContent = accountsCopy[dragItem.current];
-    accountsCopy.splice(dragItem.current, 1);
-    accountsCopy.splice(dragOverItem.current, 0, dragItemContent);
-    dragItem.current = null; dragOverItem.current = null;
-    setAccounts(accountsCopy); setDragging(false);
-=======
-    if (dragOverItem.current === null || dragItem.current === dragOverItem.current) {
-      setDragging(false); dragItem.current = null; dragOverItem.current = null; return;
-    }
+  if (dragOverItem.current === null || dragItem.current === dragOverItem.current) {
+    setDragging(false); dragItem.current = null; dragOverItem.current = null; return;
+  }
+  const copy = [...accounts];
+  const dragged = copy[dragItem.current];
+  copy.splice(dragItem.current, 1);
+  copy.splice(dragOverItem.current, 0, dragged);
+  setAccounts(copy);
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(copy.map(acc => acc.id)));
+  dragItem.current = null; dragOverItem.current = null; setDragging(false);
+};
+
     const copy = [...accounts];
     const dragged = copy[dragItem.current];
     copy.splice(dragItem.current, 1);
@@ -556,7 +518,6 @@ useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(copy.map(acc => acc.id)));
     setAccounts(copy);
     dragItem.current = null; dragOverItem.current = null; setDragging(false);
->>>>>>> da77c97b00ec707b7c10ecd17fc5dc3f03eb5ec7
   };
 
   return (
@@ -568,7 +529,6 @@ useEffect(() => {
             <p className="text-slate-400 mt-1">{page === 'dashboard' ? 'Ringkasan global dan status akun individual.' : 'Riwayat transaksi 1 minggu terakhir.'}</p>
           </div>
           {page === 'dashboard' ? (
-<<<<<<< HEAD
             <button onClick={() => setPage('history')} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg flex items-center space-x-2 transition-colors">
                 <History size={20} />
                 <span>Lihat Riwayat</span>
@@ -577,14 +537,12 @@ useEffect(() => {
             <button onClick={() => setPage('dashboard')} className="bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded-lg flex items-center space-x-2 transition-colors">
                 <ArrowLeft size={20} />
                 <span>Kembali ke Dashboard</span>
-=======
             <button onClick={() => setPage('history')} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg flex items-center space-x-2">
               <History size={20} /><span>Lihat Riwayat</span>
             </button>
           ) : (
             <button onClick={() => setPage('dashboard')} className="bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded-lg flex items-center space-x-2">
               <ArrowLeft size={20} /><span>Kembali ke Dashboard</span>
->>>>>>> da77c97b00ec707b7c10ecd17fc5dc3f03eb5ec7
             </button>
           )}
         </header>
@@ -593,12 +551,10 @@ useEffect(() => {
           {page === 'dashboard' ? (
             <>
               <div className="mb-6 relative">
-<<<<<<< HEAD
                 <input type="text" placeholder="Cari nama akun..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full bg-slate-800 border border-slate-700 rounded-lg py-3 pl-10 pr-4 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
               </div>
               <DashboardView accounts={accounts} searchTerm={searchTerm} onToggleRobot={handleToggleRobot} handleDragStart={handleDragStart} handleDragEnter={handleDragEnter} handleDragEnd={handleDragEnd} dragging={dragging} dragItem={dragItem} />
-=======
                 <input type="text" placeholder="Cari nama akun..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full bg-slate-800 border border-slate-700 rounded-lg py-3 pl-10 pr-4 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
@@ -609,7 +565,6 @@ useEffect(() => {
                 dragging={dragging} dragItem={dragItem}
               />
               <AccountList /> 
->>>>>>> da77c97b00ec707b7c10ecd17fc5dc3f03eb5ec7
             </>
           ) : (
             <HistoryPage accounts={accounts} history={history} />
