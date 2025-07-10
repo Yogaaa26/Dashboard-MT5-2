@@ -11,7 +11,7 @@ const LOCAL_STORAGE_KEY = 'accountOrder';
 const formatCurrency = (value, includeSign = true) => {
   const absValue = Math.abs(value);
   const sign = value < 0 ? '-' : (includeSign ? '+' : '');
-  return ${sign}$${absValue.toFixed(2)};
+  return `${sign}$${absValue.toFixed(2)}`;
 };
 
 // --- Shared Logic ---
