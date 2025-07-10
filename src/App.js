@@ -95,16 +95,19 @@ const AccountCard = ({ account, onToggleRobot, handleDragStart, handleDragEnter,
   const isPending = account.executionType.includes('limit') || account.executionType.includes('stop');
 
   const getExecutionTypePill = () => {
-    const type = account.executionType;
-    let bgColor = 'bg-gray-500', textColor = 'text-white';
-    if (type === 'buy_stop' || type === 'buy_limit') { bgColor = 'bg-white'; textColor = 'text-black'; } 
-    else if (type === 'sell_stop' || type === 'sell_limit') { bgColor = 'bg-yellow-600'; } 
-    else if (type === 'buy') { bgColor = 'bg-blue-600'; } 
-    else if (type === 'sell') { bgColor = 'bg-red-600'; }
-    return <span className={`px-3 py-1 text-xs font-semibold rounded-full ${bgColor} ${textColor}`}>
-    {type.replace('_', ' ').toUpperCase()}
-  </span>
-);
+  const type = account.executionType;
+  let bgColor = 'bg-gray-500', textColor = 'text-white';
+  if (type === 'buy_stop' || type === 'buy_limit') { bgColor = 'bg-white'; textColor = 'text-black'; } 
+  else if (type === 'sell_stop' || type === 'sell_limit') { bgColor = 'bg-yellow-600'; } 
+  else if (type === 'buy') { bgColor = 'bg-blue-600'; } 
+  else if (type === 'sell') { bgColor = 'bg-red-600'; }
+
+  return (
+    <span className={`px-3 py-1 text-xs font-semibold rounded-full ${bgColor} ${textColor}`}>
+      {type.replace('_', ' ').toUpperCase()}
+    </span>
+  );
+};
 
   const getBorderColor = () => {
     if (account.status !== 'active') return 'border-slate-600';
