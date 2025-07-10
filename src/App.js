@@ -38,7 +38,7 @@ const Notification = ({ notification, onClose }) => {
 
   return (
     <div className="bg-slate-800 border border-slate-700 rounded-lg shadow-2xl p-4 flex items-start space-x-3 animate-fade-in-up">
-      <Icon className={${iconColor} mt-1 flex-shrink-0} size={20} />
+      <Icon className={`${iconColor} mt-1 flex-shrink-0`} size={20} />
       <div className="flex-1">
         <p className="text-sm text-white font-semibold">{notification.title}</p>
         <p className="text-xs text-slate-300">{notification.message}</p>
